@@ -1,5 +1,7 @@
 package com.generation.golady.service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class UsuarioService {
 		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
 		
-		usuario.setSenha(usuario.getSenha());
+		usuario.setSenha(criptografarSenha(usuario.getSenha()));
 		
 		return Optional.of(usuarioRepository.save(usuario));
 		
@@ -36,7 +38,7 @@ public class UsuarioService {
 			if ( (buscaUsuario.isPresent()) && ( buscaUsuario.get().getId() != usuario.getId()))
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
 			
-			usuario.setSenha(usuario.getSenha());
+			usuario.setSenha(criptografarSenha(usuario.getSenha()));
 
 			return Optional.ofNullable(usuarioRepository.save(usuario));
 			
@@ -45,5 +47,25 @@ public class UsuarioService {
 		return Optional.empty();
 	
 	}
+	
+	public String criptografarSenha(String senha) {
+		
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(senha.getBytes());
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+            
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Erro ao criptografar senha", e);
+        }
+    }
 	
 }
