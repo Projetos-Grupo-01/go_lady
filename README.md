@@ -106,7 +106,7 @@ foto : String,
 viagem : List<Viagem>
 
 }
-Veiculo "1" --> "0.." Viagem : realiza
+Veiculo "1" --> "0.." Viagem : é usado em
 Usuario "1" --> "0.." Viagem : solicita
 
 ```
