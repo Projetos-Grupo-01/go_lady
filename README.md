@@ -124,7 +124,7 @@ tb_usuarios {
     varchar(255) nome
     varchar(255) usuario
     varchar(255) telefone
-    varchar(255) foto
+    varchar(5000) foto
     varchar(255) senha
 }
 
