@@ -88,6 +88,7 @@ class Veiculo {
 id : Long
 modelo : String,
 placa : String,
+categoria: String,
 velocidadeMedia : float,
 viagem : List<Viagem>
 
@@ -131,6 +132,7 @@ tb_veiculos {
     bigint id PK 
     varchar(255) modelo
     varchar(255) placa
+    varchar(255) categoria
     float velocidade_media 
 }
 
