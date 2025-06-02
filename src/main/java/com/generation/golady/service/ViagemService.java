@@ -14,11 +14,14 @@ public class ViagemService {
 
 	}
 
-	public LocalDateTime calculaHorarioChegada(Float distancia) {
-		int tempoTrajeto = (int)Math.round(distancia * 3);
+	public LocalDateTime calculaHorarioChegada(Float distancia, Float velocidadeMedia) {
+		Float tempoHoras = distancia / velocidadeMedia;
+		int tempoMinutos = (int) Math.round(tempoHoras * 60);
+		
+		
 		LocalDateTime horarioAtual = LocalDateTime.now();
-		LocalDateTime horarioChegada = horarioAtual.plusMinutes(tempoTrajeto);
+		LocalDateTime horarioChegada = horarioAtual.plusMinutes(tempoMinutos);
+		
 		return horarioChegada;
-
 	}
 }
