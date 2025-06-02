@@ -1,9 +1,16 @@
 package com.generation.golady.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
@@ -45,10 +52,9 @@ public class Usuario {
     @Size(min = 14, max = 14, message = "O telefone deve ter exatamente 14 caracteres (DDD XXXXX-XXXX).")
     private String telefone;
 	
-	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
-	private List<Viagem> viagem;*/
-
+	private List<Viagem> viagem;
 
 	public Long getId() {
 		return this.id;
@@ -106,13 +112,13 @@ public class Usuario {
 		this.telefone = telefone;
 	}
 
-	/*public List<Viagem> getViagem() {
+	public List<Viagem> getViagem() {
 		return this.viagem;
 	}
 
 	public void setViagem(List<Viagem> viagem) {
 		this.viagem = viagem;
-	}*/
+	}
 
 	
 }

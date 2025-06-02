@@ -5,10 +5,13 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -31,6 +34,14 @@ public class Viagem {
 	private LocalDateTime horariodesaida;
 
 	private LocalDateTime horariodechegada;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("viagem")
+	private Usuario usuario;
+
+	@ManyToOne
+	@JsonIgnoreProperties("viagem")
+	private Veiculo veiculo;
 
 	public Long getId() {
 		return id;
@@ -70,6 +81,22 @@ public class Viagem {
 
 	public void setHorariodechegada(LocalDateTime horariodechegada) {
 		this.horariodechegada = horariodechegada;
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public Veiculo getVeiculo() {
+		return veiculo;
+	}
+
+	public void setVeiculo(Veiculo veiculo) {
+		this.veiculo = veiculo;
 	}
 
 }

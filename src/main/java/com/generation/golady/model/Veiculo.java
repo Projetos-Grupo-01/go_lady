@@ -1,10 +1,17 @@
 package com.generation.golady.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -38,6 +45,10 @@ public class Veiculo {
     @DecimalMin(value = "20.00", message = "O atributo 'Velocidade média' deve ter no mínimo o valor 20!")
 	private Float velocidadeMedia;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "veiculo", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties("veiculo")
+	private List<Viagem> viagem;
+
 	public Long getId() {
 		return id;
 	}
@@ -69,12 +80,20 @@ public class Veiculo {
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
-
-	public float getVelocidadeMedia() {
+	
+	public Float getVelocidadeMedia() {
 		return velocidadeMedia;
 	}
 
-	public void setVelocidadeMedia(float velocidadeMedia) {
+	public void setVelocidadeMedia(Float velocidadeMedia) {
 		this.velocidadeMedia = velocidadeMedia;
+	}
+
+	public List<Viagem> getViagem() {
+		return viagem;
+	}
+
+	public void setViagem(List<Viagem> viagem) {
+		this.viagem = viagem;
 	}
 }
