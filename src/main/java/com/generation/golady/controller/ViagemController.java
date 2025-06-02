@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.generation.golady.model.Veiculo;
 import com.generation.golady.model.Viagem;
 import com.generation.golady.repository.UsuarioRepository;
 import com.generation.golady.repository.VeiculoRepository;
@@ -68,9 +69,11 @@ public class ViagemController {
 		
 		if(usuarioRepository.existsById(viagem.getUsuario().getId())) {
 			
-			if(veiculoRepository.existsById(viagem.getVeiculo().getId())) {
+			Optional<Veiculo> veiculo = veiculoRepository.findById(viagem.getVeiculo().getId());
+			
+			if(veiculo.isPresent()) {
 				viagem.setPreco(viagemService.calculaPreco(viagem.getDistancia()));
-				viagem.setHorariodechegada(viagemService.calculaHorarioChegada(viagem.getDistancia()));
+				viagem.setHorariodechegada(viagemService.calculaHorarioChegada(viagem.getDistancia(), veiculo.get().getVelocidadeMedia()));
 				return ResponseEntity.status(HttpStatus.CREATED).body(viagemRepository.save(viagem));
 			}
 			
@@ -88,8 +91,12 @@ public class ViagemController {
 			return ResponseEntity.badRequest().build();
 		
 		if (viagemRepository.existsById(viagem.getId())) {
+			
+			Optional<Veiculo> veiculo = veiculoRepository.findById(viagem.getVeiculo().getId());
+			
 			viagem.setPreco(viagemService.calculaPreco(viagem.getDistancia()));
-			viagem.setHorariodechegada(viagemService.calculaHorarioChegada(viagem.getDistancia()));
+			viagem.setHorariodechegada(viagemService.calculaHorarioChegada(viagem.getDistancia(), veiculo.get().getVelocidadeMedia()));
+			
 			return ResponseEntity.status(HttpStatus.OK).body(viagemRepository.save(viagem));
 		}
 
