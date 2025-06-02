@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.golady.model.Viagem;
 import com.generation.golady.repository.ViagemRepository;
+import com.generation.golady.service.ViagemService;
 
 import jakarta.validation.Valid;
  
@@ -30,6 +31,10 @@ public class ViagemController {
  
 @Autowired
 private ViagemRepository viagemRepository;
+
+@Autowired
+private ViagemService viagemService;
+
 
 @GetMapping
 public ResponseEntity<List<Viagem>> getAll() {
@@ -53,7 +58,8 @@ return ResponseEntity.ok(viagemRepository.findAllByTituloContainingIgnoreCase(ti
 
 @PostMapping
 public ResponseEntity<Viagem> post(@Valid @RequestBody Viagem viagem) {
-
+viagem.setPreco(viagemService.calculaPreco(viagem.getDistancia()));
+viagem.setHorariodechegada(viagemService.calculaHorarioChegada(viagem.getDistancia()));
 return ResponseEntity.status(HttpStatus.CREATED).body(viagemRepository.save(viagem));
 
 }
@@ -64,9 +70,11 @@ public ResponseEntity<Viagem> put(@Valid @RequestBody Viagem viagem) {
 if (viagem.getId() == null)
 return ResponseEntity.badRequest().build();
 
-if (viagemRepository.existsById(viagem.getId()))
-
+if (viagemRepository.existsById(viagem.getId())) {
+	viagem.setPreco(viagemService.calculaPreco(viagem.getDistancia()));
+	viagem.setHorariodechegada(viagemService.calculaHorarioChegada(viagem.getDistancia()));
 return ResponseEntity.status(HttpStatus.OK).body(viagemRepository.save(viagem));
+}
 
 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 

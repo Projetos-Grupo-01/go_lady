@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -22,17 +21,15 @@ public class Viagem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // UTO_INCREMENT
 	private Long id;
 
-	@NotBlank(message = "Distância Pecorrida!")
+	@NotNull(message = "Distância Pecorrida!")
 	private Float distancia;
 
-	@NotNull(message = "Preço é obrigatório!")
 	@Positive(message = "O preço deve ser maior do que zero!")
 	private BigDecimal preco;
 
 	@UpdateTimestamp
 	private LocalDateTime horariodesaida;
 
-	@UpdateTimestamp
 	private LocalDateTime horariodechegada;
 
 	public Long getId() {
