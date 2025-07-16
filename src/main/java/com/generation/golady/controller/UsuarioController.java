@@ -1,6 +1,7 @@
 package com.generation.golady.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.golady.model.Usuario;
+import com.generation.golady.model.UsuarioLogin;
 import com.generation.golady.repository.UsuarioRepository;
 import com.generation.golady.service.UsuarioService;
 
@@ -59,6 +61,15 @@ public class UsuarioController {
 		return usuarioService.cadastrarUsuario(usuario)
 			.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
 			.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+
+	}
+	
+	@PostMapping("/logar")
+	public ResponseEntity<UsuarioLogin> autenticar(@RequestBody @Valid Optional<UsuarioLogin> usuarioLogin) {
+
+		return usuarioService.autenticarUsuario(usuarioLogin)
+			.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+			.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 
 	}
 
